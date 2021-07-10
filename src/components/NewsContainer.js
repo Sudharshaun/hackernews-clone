@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
-import { Header, Segment,Modal } from 'semantic-ui-react'
-import PostDetail from './PostDetail';
+import { Header, Segment,Modal,Button, Icon } from 'semantic-ui-react'
 
 export default function NewsContainer(props) {
-    const [open, setOpen] = useState(false);
+    const [postsOpened, setPostsOpened] = useState({});
+    const handleModalState = (modalID, state) => {
+        setPostsOpened({...postsOpened, [modalID]: state});
+    }
     return (
         <Segment.Group>
             {props.stories.map( (story, index) => {
                 return <Modal key={index}
-                    open={open}
-                    onClose={() => setOpen(false)}
-                    onOpen={() => setOpen(true)}
+                    open={postsOpened[story.id]}
+                    onClose={() => handleModalState(story.id, false)}
+                    onOpen={() => handleModalState(story.id, true)}
                     trigger={<Segment key={index}>
                         <i className="heart icon heart-icon"></i>
                         <span className="score">{story.score}</span>
@@ -21,7 +23,12 @@ export default function NewsContainer(props) {
                         })}</Header>
                     </Segment>}
                 >
-                <PostDetail detail={story}></PostDetail>
+                    <Modal.Header>{story.title}</Modal.Header>
+                    <Modal.Content image scrolling>
+                        <Modal.Description>
+                            {story.title}
+                        </Modal.Description>
+                    </Modal.Content>
                 </Modal>
             })}        
         </Segment.Group>
