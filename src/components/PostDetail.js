@@ -8,11 +8,6 @@ export default function PostDetail(props) {
             <Modal.Header>{detailData.title}</Modal.Header>
             <Modal.Content image scrolling>
                 <Modal.Description>
-                <p>
-                    This is an example of expanded content that will cause the modal's
-                    dimmer to scroll.
-                </p>
-
                 <Image
                     src='https://react.semantic-ui.com/images/wireframe/paragraph.png'
                     style={{ marginBottom: 10 }}
