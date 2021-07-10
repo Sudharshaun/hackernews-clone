@@ -1,23 +1,32 @@
-import logo from './logo.svg';
+import NavBar from './components/Navbar';
+import NewsContainer from './components/NewsContainer';
+import { Container } from 'semantic-ui-react';
+import ContentLoader from './components/ContentLoader';
 import './App.css';
+import { useEffect, useState } from 'react';
+import {getStoriesData} from './utils/APIRequests';
 
 function App() {
+  const [currentTab, setcurrentTab] = useState('top');
+  const [storiesData, setstoriesData] = useState([]);
+  const [isLoading, setisLoading] = useState(true);
+  const setSelectedTab = (tab) => {
+    setcurrentTab(tab);
+  }
+  useEffect(() => {
+    getStoriesData(currentTab).then( (data) => {
+      setstoriesData(data);
+      setisLoading(false);
+      console.log(storiesData);
+    });
+  }, [currentTab]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Container>
+        <NavBar setTab={setSelectedTab}></NavBar>
+        {isLoading ? <ContentLoader/> : <NewsContainer stories={storiesData}/>}
+      </Container>
     </div>
   );
 }
